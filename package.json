@@ -1,0 +1,28 @@
+{
+  "name": "mycontacts-backend-api",
+  "version": "1.0.0",
+  "description": "contacts backend api",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/syedatahreem/Contacts-Node-Express.git"
+  },
+  "author": "Syeda Tahreem Azeez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/syedatahreem/Contacts-Node-Express/issues"
+  },
+  "homepage": "https://github.com/syedatahreem/Contacts-Node-Express#readme",
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
