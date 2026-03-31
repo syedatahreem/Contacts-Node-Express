@@ -1,11 +1,13 @@
 const asyncHandler = require("express-async-handler");
-
+const Contact = require("../models/contactModel");
+const { fetchContactById } = require("./helpers");
 //@desc Get all contacts
 //@route Get /api/contacts
 //@access public
 
 const getContact = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: "Get contacts" }); 
+  const contacts = await Contact.find();
+  res.status(200).json(contacts);
 });
 
 //@desc Get a contact by ID
@@ -13,7 +15,8 @@ const getContact = asyncHandler(async (req, res) => {
 //@access public
 
 const getContactById = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: `Get contact by ID: ${req.params.id}` });
+  const contact = await fetchContactById(req.params.id);
+  res.status(200).json(contact);
 });
 
 //@desc Create a new contact
@@ -26,8 +29,8 @@ const createContact = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("All fields are required");
   }
-  console.log(req.body);
-  res.status(201).json({ message: "Contact created successfully" });
+  const contact = await Contact.create({ name, email, phone });
+  res.status(201).json(contact);
 });
 
 //@desc Update a contact
@@ -35,13 +38,21 @@ const createContact = asyncHandler(async (req, res) => {
 //@access public
 
 const updateContact = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: "Contact updated successfully" });
+  const contact = await fetchContactById(req.params.id);
+  const updatedContact = await Contact.findByIdAndUpdate(
+    contact._id,
+    req.body,
+    { new: true },
+  );
+  res.status(200).json(updatedContact);
 });
 //@desc Delete a contact
 //@route DELETE /api/contacts/:id
 //@access public
 
 const deleteContact = asyncHandler(async (req, res) => {
+  const contact = await fetchContactById(req.params.id);
+  await Contact.findByIdAndDelete(contact._id);
   res.status(200).json({ message: "Contact deleted successfully" });
 });
 
