@@ -61,9 +61,9 @@ const loginUser = asyncHandler(async (req, res) => {
     throw new Error("Invalid credentials");
   }
   const token = jwt.sign(
-    { id: user._id, email: user.email },
+    { user: { id: user._id, email: user.email } },
     process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: "1m" },
+    { expiresIn: "1h" },
   );
   res.status(200).json({ message: "User logged in successfully", token });
 });
@@ -73,8 +73,7 @@ const loginUser = asyncHandler(async (req, res) => {
 //@access private
 
 const retrieveCurrentUser = asyncHandler(async (req, res) => {
-  // User retrieval logic here
-  res.status(200).json({ message: "User profile retrieved successfully" });
+  res.status(200).json(req.user);
 });
 
 module.exports = {

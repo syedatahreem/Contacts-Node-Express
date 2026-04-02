@@ -8,9 +8,10 @@ const validateToken = asyncHandler(async (req, res, next) => {
   if (authHeader && authHeader.startsWith("Bearer")) {
     try {
       token = authHeader.split(" ")[1];
-      const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-      req.user = await User.findById(decoded.id).select("-password");
-      next();
+      jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+        req.user = decoded.user;
+        next();
+      });
     } catch (error) {
       res.status(401);
       throw new Error("Not authorized, token failed");
